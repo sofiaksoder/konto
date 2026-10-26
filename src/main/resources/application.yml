@@ -15,3 +15,8 @@ spring:
   threads:
     virtual:
       enabled: true
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          no-cache: true   # browsers re-validate static files each load, so UI edits show up on refresh

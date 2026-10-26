@@ -3,11 +3,11 @@ import { h, api, clear, money, full, accountLabel, parseNumber, field, inputBox,
 export function render() {
   const grid = h('div', { class: 'account-grid', 'aria-busy': 'true' });
   const dialog = openDialog(load);
-  const openBtn = h('button', { class: 'btn btn-primary hero-action', type: 'button', onclick: () => dialog.showModal() }, '+ Open account');
+  const openBtn = h('button', { class: 'btn btn-primary', type: 'button', onclick: () => dialog.showModal() }, '+ Open account');
 
   const view = h('div', {},
     h('div', { class: 'hero' },
-      h('div', { class: 'hero-text' }, h('div', { class: 'label-mono' }, 'Money'), h('h1', {}, 'Accounts')),
+      h('div', { class: 'hero-text' }, h('h1', {}, 'Accounts')),
       openBtn),
     grid, dialog);
 
@@ -18,9 +18,9 @@ export function render() {
       const accounts = await api('/accounts');
       clear(grid);
       if (accounts.length === 0) {
-        grid.append(emptyState(() => dialog.showModal()));
+        grid.append(emptyState());
       } else {
-        grid.append(...accounts.map(accountCard), h('button', { class: 'new-account', type: 'button', onclick: () => dialog.showModal() }, '+ New account'));
+        grid.append(...accounts.map(accountCard));
       }
       announce(`${accounts.length} accounts`);
     } catch (e) {
@@ -47,12 +47,11 @@ function skeletonCard() {
     skeleton('40%'), skeleton('80%', 34), skeleton('60%'));
 }
 
-function emptyState(onOpen) {
+function emptyState() {
   return h('div', { class: 'empty', style: { gridColumn: '1 / -1' } },
     ridge(),
     h('h2', {}, 'No accounts yet'),
-    h('p', {}, 'Open your first account to start sending money.'),
-    h('button', { class: 'btn btn-primary btn-small', type: 'button', onclick: onOpen }, 'Open account'));
+    h('p', {}, 'Use \u201C+ Open account\u201D above to add your first account and start sending money.'));
 }
 
 function openDialog(onCreated) {

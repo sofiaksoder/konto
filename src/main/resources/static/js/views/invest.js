@@ -15,9 +15,9 @@ export function render() {
 
   function drawFlows() {
     clear(list).append(...flows.map((f, i) => h('div', { class: 'flow-row' },
-      h('input', { type: 'date', 'aria-label': `Date of flow ${i + 1}`, value: f.date, class: 'input-wrap', style: { padding: '8px 10px' }, onchange: (e) => { f.date = e.target.value; } }),
-      h('div', { class: 'input-wrap' }, h('input', { inputMode: 'decimal', 'aria-label': `Amount of flow ${i + 1}`, value: f.amount, oninput: (e) => { f.amount = e.target.value; } })),
-      h('button', { class: 'icon-btn', type: 'button', 'aria-label': `Remove flow ${i + 1}`, disabled: flows.length <= 2, onclick: () => { flows.splice(i, 1); drawFlows(); } }, '×'))));
+      h('div', { class: 'input-wrap' }, h('input', { type: 'date', 'aria-label': `Date of flow ${i + 1}`, value: f.date, onchange: (e) => { f.date = e.target.value; } })),
+      h('button', { class: 'icon-btn', type: 'button', 'aria-label': `Remove flow ${i + 1}`, disabled: flows.length <= 2, onclick: () => { flows.splice(i, 1); drawFlows(); } }, '×'),
+      h('div', { class: 'input-wrap flow-amount' }, h('input', { inputMode: 'decimal', 'aria-label': `Amount of flow ${i + 1}`, placeholder: 'Amount, e.g. -1000', value: f.amount, oninput: (e) => { f.amount = e.target.value; } })))));
   }
   drawFlows();
 
