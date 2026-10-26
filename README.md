@@ -1,5 +1,7 @@
 # Konto
 
+[![CI](https://github.com/sofiaksoder/konto/actions/workflows/ci.yml/badge.svg)](https://github.com/sofiaksoder/konto/actions/workflows/ci.yml)
+
 A small financial-services backend: a double-entry ledger with idempotent, FX-aware transfers, plus a quantitative finance toolkit.
 
 **Stack:** Java 21, Spring Boot 3.3, Spring Data JPA / Hibernate, MariaDB (H2 in MariaDB mode for tests).
