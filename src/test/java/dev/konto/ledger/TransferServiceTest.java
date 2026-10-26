@@ -1,5 +1,6 @@
 package dev.konto.ledger;
 
+import dev.konto.MariaDbIntegrationTest;
 import dev.konto.account.AccountRepository;
 import dev.konto.account.AccountService;
 import dev.konto.web.DomainException;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class TransferServiceTest {
+class TransferServiceTest extends MariaDbIntegrationTest {
 
     @Autowired AccountService accountService;
     @Autowired AccountRepository accounts;

@@ -1,5 +1,6 @@
 package dev.konto.ledger;
 
+import dev.konto.MariaDbIntegrationTest;
 import dev.konto.quant.MonteCarloVar;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AccountApiTest {
+class AccountApiTest extends MariaDbIntegrationTest {
 
     @Autowired MockMvc mvc;
 

@@ -4,14 +4,14 @@
 
 A small financial-services backend: a double-entry ledger with idempotent, FX-aware transfers, plus a quantitative finance toolkit.
 
-**Stack:** Java 21, Spring Boot 3.3, Spring Data JPA / Hibernate, MariaDB (H2 in MariaDB mode for tests).
+**Stack:** Java 21, Spring Boot 3.3, Spring Data JPA / Hibernate, MariaDB. Integration tests run against a real MariaDB via Testcontainers.
 
 ## Run
 
 ```bash
 docker compose up -d        # MariaDB on :3306
 mvn spring-boot:run
-mvn test                    # uses in-memory H2, no database needed
+mvn test                    # needs Docker: integration tests start a throwaway MariaDB container
 ```
 
 Connection settings come from `DB_URL`, `DB_USER`, `DB_PASSWORD` (defaults match `docker-compose.yml`).

@@ -1,8 +1,5 @@
+# The datasource comes from the MariaDB Testcontainer (see MariaDbIntegrationTest).
 spring:
-  datasource:
-    url: jdbc:h2:mem:konto;MODE=MariaDB;DB_CLOSE_DELAY=-1
-    username: sa
-    password: ""
   jpa:
     hibernate:
       ddl-auto: create-drop
