@@ -88,5 +88,8 @@ curl -X POST localhost:8080/api/quant/value-at-risk -H 'Content-Type: applicatio
 
 ## Notes
 
-- Schema is created by Hibernate (`ddl-auto: update`) for simplicity; a production setup would use Flyway migrations.
+- The schema is owned by Flyway: migrations live in `src/main/resources/db/migration` and run on startup. Hibernate runs with
+  `ddl-auto: validate`, so the app refuses to start if the entities and the migrated schema disagree. To change the schema,
+  add a new `V2__...sql` file; never edit an applied one.
+- A database created by an earlier version of Konto (when Hibernate built the tables) is adopted automatically as migration 1.
 - FX rates are a static table in `FxService`; swap in a market-data feed.

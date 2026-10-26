@@ -16,5 +16,17 @@ services:
       timeout: 3s
       retries: 20
 
+  app:
+    build: .
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mariadb://mariadb:3306/konto
+      DB_USER: konto
+      DB_PASSWORD: konto
+    ports:
+      - "8080:8080"
+
 volumes:
   mariadb-data:

@@ -2,5 +2,5 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate   # Flyway builds the schema in the container; Hibernate must agree with it
     open-in-view: false
