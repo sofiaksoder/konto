@@ -178,6 +178,11 @@ export function notFound(message = 'We couldn’t find that page.') {
     h('div', { class: 'empty' }, ridge(), h('h1', { class: 'page-title' }, message), h('a', { class: 'btn btn-primary', href: '#/accounts' }, 'Go home')));
 }
 
+/** Slim photo banner shared by the Money pages (Accounts, statements, Send money). */
+export function banner(title) {
+  return h('header', { class: 'banner' }, h('h1', {}, title));
+}
+
 export function pageHeader(label, title, sub) {
   return h('div', {},
     label ? h('div', { class: 'label-mono', style: { color: '#1B4A73' } }, label) : null,

@@ -1,19 +1,20 @@
-import { h, api, ApiError, clear, money, full, plain, accountLabel, transferLabel, longDate, parseNumber, errorPanel, announce, MINUS } from '../lib.js';
+import { h, banner, api, ApiError, clear, money, full, plain, accountLabel, transferLabel, longDate, parseNumber, errorPanel, announce, MINUS } from '../lib.js';
 
 const STEPS = ['Details', 'Confirm', 'Sending', 'Result'];
 
 export async function render(query) {
   const root = h('div', { class: 'page' });
+  const view = h('div', {}, banner('Send money'), root);
   let accounts;
   try {
     accounts = await api('/accounts');
   } catch (e) {
     root.append(errorPanel(`We couldn’t load your accounts. ${e.message}`));
-    return root;
+    return view;
   }
   if (accounts.length < 2) {
     root.append(needsTwoAccounts(accounts));
-    return root;
+    return view;
   }
 
   const byId = (id) => accounts.find((a) => a.id === Number(id));
@@ -107,7 +108,7 @@ export async function render(query) {
 
     queueMicrotask(() => { update(); });
     return h('div', { class: 'stack' },
-      h('div', {}, h('h1', { class: 'page-title' }, 'Send money'), h('p', { class: 'page-sub' }, 'Transfers can’t be undone, so you’ll review everything first.')),
+      h('p', { class: 'page-sub' }, 'Transfers can’t be undone, so you’ll review everything first.'),
       h('div', { class: 'two' }, fromPicker.el, toPicker.el),
       amountBox, errorEl, previewEl,
       h('div', { class: 'actions' }, reviewBtn, h('a', { class: 'btn btn-secondary', href: '#/accounts' }, 'Cancel')));
@@ -164,7 +165,7 @@ export async function render(query) {
     if (f !== t && state.rate) rows.push(['Rate (estimate)', `1 ${f} = ${plain(Number(state.rate.rate), 2, 4)} ${t}`]);
 
     return h('div', { class: 'stack' },
-      h('h1', { class: 'page-title' }, 'Check before you send'),
+      h('h2', { class: 'step-title' }, 'Check before you send'),
       h('div', { class: 'summary' },
         h('div', { class: 'big' }, h('div', { class: 'label-mono' }, 'Leaves your account'),
           h('div', { class: 'v', title: full(n, f) }, `${MINUS}${money(n, f)} `, h('span', { class: 'cur' }, f))),
@@ -225,7 +226,7 @@ export async function render(query) {
   function stepSending() {
     const n = amount(); const f = from().currency;
     return h('div', { class: 'stack' },
-      h('h1', { class: 'page-title', style: { marginTop: '40px' } }, `Sending ${money(n, f)} ${f}…`),
+      h('h2', { class: 'step-title', style: { marginTop: '24px' } }, `Sending ${money(n, f)} ${f}…`),
       h('div', { class: 'progress', 'aria-hidden': 'true' }, h('div')),
       h('div', { class: 'checklist' }, h('div', {}, '✓ Request sent'), h('div', { class: 'pending' }, '○ Moving the money'), h('div', { class: 'pending' }, '○ Recording it in both statements')),
       h('div', { class: 'callout info', style: { maxWidth: '560px' } }, h('b', {}, 'Taking longer than usual?'),
@@ -240,7 +241,7 @@ export async function render(query) {
     return h('div', { class: 'stack' },
       h('div', { class: 'success-head' },
         h('div', { class: 'check', 'aria-hidden': 'true' }, '✓'),
-        h('div', {}, h('h1', { class: 'page-title' }, 'Sent. It went through.'),
+        h('div', {}, h('h2', { class: 'step-title' }, 'Sent. It went through.'),
           h('div', { class: 'page-sub' }, `Transfer ${transferLabel(r.id)} · ${longDate(r.createdAt)}`))),
       h('div', { class: 'two num' },
         h('div', { class: 'card', title: full(r.amount, f) }, h('div', { class: 'label-mono' }, `Debited · ${accountLabel(r.fromAccountId)}`),
@@ -259,15 +260,14 @@ export async function render(query) {
 
   await loadRate();
   draw();
-  return root;
+  return view;
 }
 
 /** Shown until there are two accounts: a transfer always goes from one Konto account to another. */
 function needsTwoAccounts(accounts) {
   const has = accounts.length;
   return h('div', { class: 'stack' },
-    h('div', {}, h('h1', { class: 'page-title' }, 'Send money'),
-      h('p', { class: 'page-sub' }, 'Transfers move money from one Konto account to another.')),
+    h('p', { class: 'page-sub' }, 'Transfers move money from one Konto account to another.'),
     h('section', { class: 'notice-card', 'aria-labelledby': 'two-accounts-title' },
       h('div', { class: 'label-mono', id: 'two-accounts-title' }, has === 0 ? 'Two accounts needed' : 'One more account needed'),
       h('p', {}, has === 0

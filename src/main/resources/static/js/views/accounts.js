@@ -1,16 +1,12 @@
-import { h, api, clear, money, full, accountLabel, parseNumber, field, inputBox, selectBox, ridge, skeleton, errorPanel, CURRENCIES, announce } from '../lib.js';
+import { h, banner, api, clear, money, full, accountLabel, parseNumber, field, inputBox, selectBox, skeleton, errorPanel, CURRENCIES, announce } from '../lib.js';
 
 export function render(query = new URLSearchParams()) {
   const grid = h('div', { class: 'account-grid', 'aria-busy': 'true' });
   // ?then=send returns to the send-money flow once the new account exists
   const returnTo = query.get('then') === 'send' ? 'send' : null;
   const dialog = openDialog(() => (returnTo ? (location.hash = `#/${returnTo}`) : load()));
-  const openBtn = h('button', { class: 'btn btn-primary', type: 'button', onclick: () => dialog.showModal() }, '+ Open account');
-
   const view = h('div', {},
-    h('div', { class: 'hero' },
-      h('div', { class: 'hero-text' }, h('h1', {}, 'Accounts')),
-      openBtn),
+    banner('Accounts'),
     grid, dialog);
 
   async function load() {
@@ -19,11 +15,8 @@ export function render(query = new URLSearchParams()) {
     try {
       const accounts = await api('/accounts');
       clear(grid);
-      if (accounts.length === 0) {
-        grid.append(emptyState());
-      } else {
-        grid.append(...accounts.map(accountCard));
-      }
+      // The dashed tile sits where the next account will appear; it is the only way to open one here.
+      grid.append(...accounts.map(accountCard), newAccountTile(accounts.length === 0, () => dialog.showModal()));
       announce(`${accounts.length} accounts`);
     } catch (e) {
       clear(grid).append(errorPanel(`We couldn’t load your accounts. ${e.message}`, load));
@@ -53,11 +46,10 @@ function skeletonCard() {
     skeleton('40%'), skeleton('80%', 34), skeleton('60%'));
 }
 
-function emptyState() {
-  return h('div', { class: 'empty', style: { gridColumn: '1 / -1' } },
-    ridge(),
-    h('h2', {}, 'No accounts yet'),
-    h('p', {}, 'Use \u201C+ Open account\u201D above to add your first account and start sending money.'));
+function newAccountTile(first, onOpen) {
+  return h('button', { class: 'new-account', type: 'button', onclick: onOpen },
+    h('span', { class: 'new-account-title' }, first ? '+ Open your first account' : '+ Open new account'),
+    first ? h('span', { class: 'new-account-hint' }, 'Choose a currency and an opening deposit.') : null);
 }
 
 function openDialog(onCreated) {

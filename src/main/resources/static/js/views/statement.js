@@ -1,4 +1,4 @@
-import { h, api, ApiError, clear, money, signed, full, accountLabel, shortDate, notFound, errorPanel, skeleton } from '../lib.js';
+import { h, banner, api, ApiError, clear, money, signed, full, accountLabel, shortDate, notFound, errorPanel, skeleton } from '../lib.js';
 
 const PAGE_SIZE = 15;
 
@@ -43,17 +43,17 @@ export async function render(idText) {
       h('button', { class: 'btn btn-secondary btn-small', type: 'button', disabled: count < PAGE_SIZE, onclick: () => { page++; load(); } }, 'Older ›'));
   }
 
-  const view = h('div', { class: 'page' },
+  const view = h('div', {}, banner('Statement'), h('div', { class: 'page' },
     h('a', { class: 'back-link', href: '#/accounts' }, '← All accounts'),
     h('div', { class: 'statement-head' },
       h('div', {},
         h('div', { class: 'label-mono' }, `${accountLabel(account.id)} · ${account.currency} · Statement`),
-        h('h1', { class: 'page-title long-number' }, account.owner)),
+        h('h2', { class: 'page-title long-number' }, account.owner)),
       h('div', { title: full(account.balance, account.currency), tabindex: '0' },
         h('div', { class: 'label-mono' }, 'Balance'),
         h('div', { class: 'statement-balance' }, money(account.balance, account.currency), ' ', h('span', { class: 'cur' }, account.currency))),
       h('a', { class: 'btn btn-primary', href: `#/send?from=${account.id}` }, 'Send money')),
-    body, pager);
+    body, pager));
   load();
   return view;
 }
