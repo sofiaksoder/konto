@@ -1,4 +1,4 @@
-import { h, api, ApiError, clear, money, full, plain, accountLabel, transferLabel, longDate, parseNumber, ridge, errorPanel, announce, MINUS } from '../lib.js';
+import { h, api, ApiError, clear, money, full, plain, accountLabel, transferLabel, longDate, parseNumber, errorPanel, announce, MINUS } from '../lib.js';
 
 const STEPS = ['Details', 'Confirm', 'Sending', 'Result'];
 
@@ -12,9 +12,7 @@ export async function render(query) {
     return root;
   }
   if (accounts.length < 2) {
-    root.append(h('div', { class: 'empty' }, ridge(), h('h1', { class: 'page-title' }, 'Send money'),
-      h('p', {}, accounts.length === 0 ? 'You need two accounts to send money between them.' : 'You need a second account to send money to.'),
-      h('a', { class: 'btn btn-primary btn-small', href: '#/accounts' }, 'Open an account')));
+    root.append(needsTwoAccounts(accounts));
     return root;
   }
 
@@ -262,4 +260,22 @@ export async function render(query) {
   await loadRate();
   draw();
   return root;
+}
+
+/** Shown until there are two accounts: a transfer always goes from one Konto account to another. */
+function needsTwoAccounts(accounts) {
+  const has = accounts.length;
+  return h('div', { class: 'stack' },
+    h('div', {}, h('h1', { class: 'page-title' }, 'Send money'),
+      h('p', { class: 'page-sub' }, 'Transfers move money from one Konto account to another.')),
+    h('section', { class: 'notice-card', 'aria-labelledby': 'two-accounts-title' },
+      h('div', { class: 'label-mono', id: 'two-accounts-title' }, has === 0 ? 'Two accounts needed' : 'One more account needed'),
+      h('p', {}, has === 0
+        ? 'You don\u2019t have any accounts yet. Open two, one to send from and one to receive, and you can move money between them.'
+        : 'You have one account so far, so there\u2019s nowhere to send money yet. Open a second account, in any currency, to send to it.'),
+      accounts.map((a) => h('div', { class: 'mini-account' },
+        h('span', {}, h('span', { class: 'label-mono' }, accountLabel(a.id)), ' ', a.owner),
+        h('span', { class: 'num', title: full(a.balance, a.currency) }, `${money(a.balance, a.currency)} ${a.currency}`))),
+      h('div', {}, h('a', { class: 'btn btn-primary', href: '#/accounts?open=1&then=send' },
+        has === 0 ? 'Open an account' : 'Open a second account'))));
 }

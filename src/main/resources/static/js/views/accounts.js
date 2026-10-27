@@ -1,8 +1,10 @@
 import { h, api, clear, money, full, accountLabel, parseNumber, field, inputBox, selectBox, ridge, skeleton, errorPanel, CURRENCIES, announce } from '../lib.js';
 
-export function render() {
+export function render(query = new URLSearchParams()) {
   const grid = h('div', { class: 'account-grid', 'aria-busy': 'true' });
-  const dialog = openDialog(load);
+  // ?then=send returns to the send-money flow once the new account exists
+  const returnTo = query.get('then') === 'send' ? 'send' : null;
+  const dialog = openDialog(() => (returnTo ? (location.hash = `#/${returnTo}`) : load()));
   const openBtn = h('button', { class: 'btn btn-primary', type: 'button', onclick: () => dialog.showModal() }, '+ Open account');
 
   const view = h('div', {},
@@ -29,6 +31,10 @@ export function render() {
     grid.setAttribute('aria-busy', 'false');
   }
   load();
+  if (query.get('open')) {
+    history.replaceState(null, '', `#/accounts${returnTo ? `?then=${returnTo}` : ''}`);   // a reload should not reopen the form
+    setTimeout(() => dialog.showModal());   // after the view is attached to the page
+  }
   return view;
 }
 

@@ -145,6 +145,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .account-card .balance .cur { font-size: 14px; color: var(--slate-600); letter-spacing: 0; }
 .account-card .bottom { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--text-2); }
 .account-card .bottom a { font-weight: 500; white-space: nowrap; }
+.notice-card { border: 1px solid var(--line); border-radius: 12px; padding: 24px; max-width: 640px; display: flex; flex-direction: column; gap: 14px; }
+.notice-card > p { color: var(--text-2); line-height: 1.55; }
+.mini-account { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; background: var(--snow); border-radius: 10px; padding: 12px 16px; font-size: 14px; }
+.mini-account .num { font-weight: 500; overflow-wrap: anywhere; }
 .empty { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; max-width: 360px; padding: 8px 0; }
 .empty svg { width: 200px; max-width: 100%; height: auto; margin-bottom: 4px; }
 .empty h2 { font-size: 18px; font-weight: 500; }

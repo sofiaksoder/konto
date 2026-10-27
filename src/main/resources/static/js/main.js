@@ -24,7 +24,7 @@ const NAV = [
 ];
 
 const ROUTES = {
-  accounts: (parts) => (parts[1] ? statement.render(parts[1]) : accounts.render()),
+  accounts: (parts, query) => (parts[1] ? statement.render(parts[1]) : accounts.render(query)),
   send: (parts, query) => send.render(query),
   loan: () => loan.render(),
   investment: () => invest.render(),

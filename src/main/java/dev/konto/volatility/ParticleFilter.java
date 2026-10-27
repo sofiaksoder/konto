@@ -1,8 +1,8 @@
 package dev.konto.volatility;
 
 import java.util.Arrays;
+import java.util.SplittableRandom;
 import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
 
 /**
  * Bootstrap particle filter for the stochastic volatility model, ported from Undertow (pfvol/filter.py).
@@ -50,7 +50,7 @@ public final class ParticleFilter {
             throw new IllegalArgumentException("returns must not be empty");
         }
 
-        RandomGenerator rng = RandomGeneratorFactory.of("L64X128MixRandom").create(seed);
+        RandomGenerator rng = new SplittableRandom(seed);   // java.base only, works in slim JRE images
         int days = returns.length;
         int n = particles;
         double mu = params.mu();

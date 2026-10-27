@@ -3,12 +3,11 @@ package dev.konto.quant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.SplittableRandom;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.random.RandomGenerator;
-import java.util.random.RandomGenerator.SplittableGenerator;
-import java.util.random.RandomGeneratorFactory;
 
 /**
  * Value-at-Risk and Expected Shortfall under geometric Brownian motion.
@@ -43,7 +42,8 @@ public final class MonteCarloVar {
         double drift = (annualDrift - 0.5 * annualVol * annualVol) * years;
         double diffusion = annualVol * Math.sqrt(years);
 
-        SplittableGenerator root = RandomGeneratorFactory.<SplittableGenerator>of("L64X128MixRandom").create(seed);
+        // SplittableRandom lives in java.base, so it exists even in slim JRE images without the jdk.random module.
+        SplittableRandom root = new SplittableRandom(seed);
         double[] losses = new double[paths];
         int per = paths / CHUNKS;
 
