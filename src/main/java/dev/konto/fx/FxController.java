@@ -1,5 +1,6 @@
 package dev.konto.fx;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
+@Tag(name = "FX", description = "Exchange-rate estimates")
 @RestController
 @RequestMapping("/api/fx")
 public class FxController {

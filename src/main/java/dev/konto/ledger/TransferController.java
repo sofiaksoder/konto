@@ -1,5 +1,6 @@
 package dev.konto.ledger;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+@Tag(name = "Transfers and audit", description = "Move money between accounts (idempotent) and verify the ledger")
 @RestController
 @RequestMapping("/api")
 public class TransferController {

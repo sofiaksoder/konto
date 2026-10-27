@@ -1,5 +1,6 @@
 package dev.konto.account;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import dev.konto.ledger.Direction;
 import dev.konto.ledger.LedgerEntry;
 import jakarta.validation.Valid;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
+@Tag(name = "Accounts", description = "Open accounts, read balances and statements")
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {

@@ -11,7 +11,8 @@ COPY src src
 RUN mvn -B -ntp -DskipTests package
 
 # ---- run ----
-FROM eclipse-temurin:21-jre
+# Pinned to Ubuntu 22.04 (jammy): the default 24.04-based tag segfaults on some Docker Desktop hosts.
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 RUN groupadd --system konto && useradd --system --gid konto --no-create-home konto

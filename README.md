@@ -8,10 +8,21 @@ A small financial-services backend: a double-entry ledger with idempotent, FX-aw
 
 ## Run
 
+**Whole stack in Docker** (MariaDB + the app, no Java needed):
+
 ```bash
-docker compose up -d        # MariaDB on :3306
-mvn spring-boot:run
-mvn test                    # needs Docker: integration tests start a throwaway MariaDB container
+docker compose up --build
+```
+
+Then open http://localhost:8080/ for the UI and http://localhost:8080/swagger-ui.html for the interactive API docs
+(the raw OpenAPI document is at `/v3/api-docs`).
+
+**For development** (database in Docker, app on your machine):
+
+```bash
+docker compose up -d mariadb   # MariaDB on :3306
+mvn spring-boot:run            # stop the compose `app` service first: both use port 8080
+mvn test                       # needs Docker: integration tests start a throwaway MariaDB container
 ```
 
 Connection settings come from `DB_URL`, `DB_USER`, `DB_PASSWORD` (defaults match `docker-compose.yml`).

@@ -1,5 +1,6 @@
 package dev.konto.volatility;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Volatility", description = "Particle-filter volatility forecasts (ported from Undertow)")
 @RestController
 @RequestMapping("/api/quant")
 public class VolatilityController {

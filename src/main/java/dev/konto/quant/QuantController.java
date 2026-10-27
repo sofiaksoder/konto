@@ -1,5 +1,6 @@
 package dev.konto.quant;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import dev.konto.quant.BlackScholes.Greeks;
 import dev.konto.quant.BlackScholes.OptionType;
 import dev.konto.quant.FinanceMath.CashFlow;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Tag(name = "Quant toolkit", description = "Loan schedules, XIRR, Black-Scholes, implied volatility, Value-at-Risk")
 @RestController
 @RequestMapping("/api/quant")
 public class QuantController {
